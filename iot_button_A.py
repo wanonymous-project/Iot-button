@@ -23,7 +23,7 @@ def main():
         devices = [evdev.InputDevice(path) for path in evdev.list_devices()]
 
         for device in devices:
-            if("B8:27:EB:A2:AE:CE" in device.phys):
+            if("Shutter" in device.name):
                 dev_path = device.path
         if (dev_path == "") :
             sleep(1)
