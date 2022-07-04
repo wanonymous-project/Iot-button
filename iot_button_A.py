@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
 
 """Python IoT Button"""
@@ -13,7 +13,7 @@ import requests
 #import settings
 
 
-# ホールドされたとみなす時間(秒)
+# 長押しされたとみなす時間(秒)
 hold_time_sec = 0.5
 
 def main():
@@ -23,7 +23,7 @@ def main():
         devices = [evdev.InputDevice(path) for path in evdev.list_devices()]
 
         for device in devices:
-            if("Shutter" in device.name):
+            if("B8:27:EB:A2:AE:CE" in device.phys):
                 dev_path = device.path
         if (dev_path == "") :
             sleep(1)
@@ -35,48 +35,32 @@ def main():
 
     print("IoT Button is ready.")
     old = 0
-    iOS_flag=0
-    is_android = 0
+    button_android = 0
+    button_ios = 0
 
     for event in dev.read_loop():
 
         if event.type == ecodes.EV_KEY:
 
+            print("------------調査用-------------")
             print("type:" + str(event.type))
             print("value" + str(event.value))
             print("code" + str(event.code))
+            print(evdev.ecodes.KEY[115])
+            print("-------------------------------")
 
-            if event.value == 1:
-                if event.code == 115:  # when android button pushed
-                    is_android=1
+            if event.value == 1: #キーを押し下げる
+                if event.code == evdev.ecodes.KEY_VOLUMEUP:  #キーコード：115。なぜかどちらのボタンをクリックしてもkey:115が飛ぶ
+                    button_android = 1
+                    button_ios = 1
+                    push_time = time() #押した時間の記録
 
-            # key upが始まったら
-            if event.value == 0:
-                if iOS_flag==1 :
-                    iOS_flag=0
-                    continue
+            if event.value == 0: #キーを押し上げる
 
-                # 長押し終わり
-                if old != 0 and time() - old > hold_time_sec:
-                    if is_android :
-                        ConnectServer(dev_name,dev_phys,"Android hold")
-                        is_android=0
-                        iOS_flag=1
-                    else:
-                        ConnectServer(dev_name,dev_phys,"iOS hold")
-
-                    old = 0
-                    continue
-                if is_android:
-                    ConnectServer(dev_name,dev_phys,"Android push")
-                    is_android=0
-                    iOS_flag=1
+                if time() - push_time > hold_time_sec: #長押しのとき
+                    ConnectServer(dev_name,dev_phys,"button hold")
                 else:
-                    ConnectServer(dev_name,dev_phys,"iOS push")
-
-            # 長押しスタート
-            if event.value == 2 and old == 0:
-                old = time()
+                    ConnectServer(dev_name,dev_phys,"button push")
 
 
 def ConnectServer(dev_name,dev_phys,button):
