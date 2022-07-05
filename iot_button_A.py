@@ -10,11 +10,13 @@ import datetime
 from time import time, sleep
 from urllib import request, error
 import requests
+import subprocess
 #import settings
 
 
 # 長押しされたとみなす時間(秒)
 hold_time_sec = 0.5
+button_symbol = "A"
 
 def main():
     print("Waiting for device to become ready...")
@@ -58,21 +60,29 @@ def main():
             if event.value == 0: #キーを押し上げる
 
                 if time() - push_time > hold_time_sec: #長押しのとき
-                    ConnectServer(dev_name,dev_phys,"button hold")
+                    record_and_notice(dev_name,dev_phys,"hold")
                 else:
-                    ConnectServer(dev_name,dev_phys,"button push")
+                    record_and_notice(dev_name,dev_phys,"push")
 
 
-def ConnectServer(dev_name,dev_phys,button):
-        try:
-                url = 'https://script.google.com/macros/s/AKfycbyUGtXrzmUod2y_3eNAeyBJKS6bRWd0eX3FtW-STDVJY24vbhS1iWEXyuP47rAqp2An0A/exec'+'?device_name='+dev_name+'&device_phys='+dev_phys+'&button='+button
-                print(button)
-                requests.get(url)
+def record_and_notice(dev_name,dev_phys,button):
 
-        except error.HTTPError as err:
-                print(err.code)
-        except error.URLError as err:
-                print(err.reason)
+    try:
+        url = 'https://script.google.com/macros/s/AKfycbyUGtXrzmUod2y_3eNAeyBJKS6bRWd0eX3FtW-STDVJY24vbhS1iWEXyuP47rAqp2An0A/exec'+'?device_name='+dev_name+'&device_phys='+dev_phys+'&button_symbol='+button_symbol+'&button='+button
+        print(button_symbol)
+        print(button)
+        print(url)
+        requests.get(url)
+
+    except error.HTTPError as err:
+        print(err.code)
+    except error.URLError as err:
+        print(err.reason)
+
+    command = "sudo node /home/yukiyoshi1992/google_home/IoT_button_"+button_symbol+"_" + button + ".js"
+    print(command)
+
+    subprocess.run([command],shell = True)
 
 if __name__ == '__main__':
     try:
