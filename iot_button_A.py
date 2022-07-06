@@ -15,7 +15,12 @@ import subprocess
 
 
 # 長押しされたとみなす時間(秒)
-hold_time_sec = 0.5
+hold_time_sec = 1.0
+# キャンセルされたとみなす時間（秒）
+cancel_time_sec = 7.0
+# ボタンのアドレス
+button_adress = "B8:27:EB:A2:AE:CE"
+# どのボタンかわかるように記号割り振り
 button_symbol = "A"
 
 def main():
@@ -25,7 +30,7 @@ def main():
         devices = [evdev.InputDevice(path) for path in evdev.list_devices()]
 
         for device in devices:
-            if("B8:27:EB:A2:AE:CE" in device.phys):
+            if( button_adress  in device.phys):
                 dev_path = device.path
         if (dev_path == "") :
             sleep(1)
@@ -59,8 +64,16 @@ def main():
 
             if event.value == 0: #キーを押し上げる
 
-                if time() - push_time > hold_time_sec: #長押しのとき
-                    record_and_notice(dev_name,dev_phys,"hold")
+                print("test")
+                print(push_time)
+                print(cancel_time_sec)
+
+                if time() - push_time > cancel_time_sec:
+                    record_and_notice(dev_name,dev_phys,"delete") # 一行削除の実行
+
+                elif time() - push_time > hold_time_sec:
+                    record_and_notice(dev_name,dev_phys,"hold") #長押しのとき
+
                 else:
                     record_and_notice(dev_name,dev_phys,"push")
 
