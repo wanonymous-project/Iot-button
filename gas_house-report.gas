@@ -1,0 +1,58 @@
+//GETリクエスト時に呼び出される関数
+function doGet(e) {
+
+  //▼SHEET情報の設定--------------------------------------------------------------
+  //IoT_button_A
+  const SPREAD_SHEET_ID_IoT_button_A = '1DbkOzjZgfafqamjoArpap_l5ALO4J_v0o9CbwVKtaXQ';
+  const SHEET_NAME_Iot_button_A = 'query';
+  //▲SHEET情報の設定--------------------------------------------------------------
+
+  class FeedData{
+
+    constructor() {
+      this.latest_food_time = '1990/01/01 00:00:00';
+      this.latest_water_time = '1990/01/01 00:00:00'; 
+    }
+
+    getFeedData(){
+
+      //スプレットシート情報の取得
+      const sheet = SpreadsheetApp.openById(SPREAD_SHEET_ID_IoT_button_A).getSheetByName(SHEET_NAME_Iot_button_A);
+      
+      //データ取得
+      this.latest_food_time = sheet.getRange('B4').getValue();
+      this.latest_water_time = sheet.getRange('B8').getValue();
+    
+    }
+
+  }
+
+  //＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋
+
+  var feed_data = new FeedData()  //餌やり情報のインスタンス化
+  feed_data.getFeedData(); //餌やりデータをspread sheetから取得
+
+
+  sendData(a,b,c) //データの送信
+
+  return result;
+}
+
+
+
+function sendData(a,b,c){
+
+  //返却情報を生成
+  const result = ContentService.createTextOutput();
+
+  //Mime TypeをJSONに設定
+  result.setMimeType(ContentService.MimeType.JSON);
+
+  //JSONテキストをセットする
+  result.setContent(JSON.stringify(data));
+  
+}
+
+
+
+
