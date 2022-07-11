@@ -11,8 +11,13 @@ function doGet(e) {
   const SPREAD_SHEET_ID_room_status_flg = '1SupSrnjGNuus-ASH5jTMu1ptKz79X3XoiM1j6WZwhro';
 
   //BME280
-  const SPREAD_SHEET_ID_bme280 = '1iNjsxJWTYh2Qkz6HrGS9MaM-OSAxHXc23KgraNFNrDw'
+  const SPREAD_SHEET_ID_bme280 = '1iNjsxJWTYh2Qkz6HrGS9MaM-OSAxHXc23KgraNFNrDw';
   const SHEET_NAME_bme280 = 'query';
+
+  //Nature Remo
+  const SPREAD_SHEET_ID_nature_remo = '1LPYE4k1unV0rAAXkdanK-J58gsWrX94iBq6Y6ln-Lig';
+  const SHEET_NAME_nature_remo = 'query';
+
 
   //▲SHEET情報の設定--------------------------------------------------------------
 
@@ -65,7 +70,6 @@ function doGet(e) {
       this.bme280_temperature = 0;
       this.bme280_humidity = 0; 
       this.nature_remo_temperature = 0;
-      this.nature_remo_humidity = 0;
     }
 
     getRoomEnvironmentData(){
@@ -76,6 +80,12 @@ function doGet(e) {
       //データ取得
       this.bme280_temperature = sheet_bme280.getRange('B8').getValue();
       this.bme280_humidity = sheet_bme280.getRange('B12').getValue();
+
+      //スプレットシート情報の取得
+      const sheet_nature_remo = SpreadsheetApp.openById(SPREAD_SHEET_ID_nature_remo).getSheetByName(SHEET_NAME_nature_remo);
+      
+      //データ取得
+      this.nature_remo_temperature = sheet_nature_remo.getRange('B4').getValue();
 
     }
 
@@ -88,6 +98,10 @@ function doGet(e) {
 
   var room_status_flg = new Room_status_flg(); //部屋情報のインスタンス化
   room_status_flg.getRoomStatusFlg(); //部屋情報データをspread sheetから取得
+
+  var room_environment = new Room_environment(); //部屋環境のインスタンス化
+  room_environment.getRoomEnvironmentData() //部屋環境データをspread sheetから取得
+
 
 
   sendData(a,b,c) //データの送信
