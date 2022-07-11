@@ -2,11 +2,18 @@
 function doGet(e) {
 
   //▼SHEET情報の設定--------------------------------------------------------------
+
   //IoT_button_A
   const SPREAD_SHEET_ID_IoT_button_A = '1DbkOzjZgfafqamjoArpap_l5ALO4J_v0o9CbwVKtaXQ';
   const SHEET_NAME_Iot_button_A = 'query';
+
   //部屋状態フラグ
   const SPREAD_SHEET_ID_room_status_flg = '1SupSrnjGNuus-ASH5jTMu1ptKz79X3XoiM1j6WZwhro';
+
+  //BME280
+  const SPREAD_SHEET_ID_bme280 = '1iNjsxJWTYh2Qkz6HrGS9MaM-OSAxHXc23KgraNFNrDw'
+  const SHEET_NAME_bme280 = 'query';
+
   //▲SHEET情報の設定--------------------------------------------------------------
 
   //餌やり・水交換クラス
@@ -46,6 +53,29 @@ function doGet(e) {
       //データ取得
       this.washitsu_status_flg = sheet.getRange('B2').getValue();
       this.living_status_flg = sheet.getRange('B3').getValue();
+
+    }
+
+  }
+
+  //温湿度情報
+  class Room_environment{
+
+    constructor(){
+      this.bme280_temperature = 0;
+      this.bme280_humidity = 0; 
+      this.nature_remo_temperature = 0;
+      this.nature_remo_humidity = 0;
+    }
+
+    getRoomEnvironmentData(){
+
+      //スプレットシート情報の取得
+      const sheet_bme280 = SpreadsheetApp.openById(SPREAD_SHEET_ID_bme280).getSheetByName(SHEET_NAME_bme280);
+      
+      //データ取得
+      this.bme280_temperature = sheet_bme280.getRange('B8').getValue();
+      this.bme280_humidity = sheet_bme280.getRange('B12').getValue();
 
     }
 
