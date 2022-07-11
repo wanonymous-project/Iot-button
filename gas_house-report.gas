@@ -5,8 +5,11 @@ function doGet(e) {
   //IoT_button_A
   const SPREAD_SHEET_ID_IoT_button_A = '1DbkOzjZgfafqamjoArpap_l5ALO4J_v0o9CbwVKtaXQ';
   const SHEET_NAME_Iot_button_A = 'query';
+  //部屋状態フラグ
+  const SPREAD_SHEET_ID_room_status_flg = '1SupSrnjGNuus-ASH5jTMu1ptKz79X3XoiM1j6WZwhro';
   //▲SHEET情報の設定--------------------------------------------------------------
 
+  //餌やり・水交換のspread sheetからのデータ取得クラス
   class FeedData{
 
     constructor() {
@@ -27,10 +30,34 @@ function doGet(e) {
 
   }
 
+  //部屋利用情報の取得
+  class Room_status_flg{
+
+    constructor(){
+      this.washitsu_status_flg = 0; 
+      this.living_status_flg = 0;
+    }
+
+    getRoomStatusFlg(){
+
+      //スプレットシート情報の取得
+      const sheet = SpreadsheetApp.openById(SPREAD_SHEET_ID_room_status_flg).getActiveSheet();
+      
+      //データ取得
+      this.washitsu_status_flg = sheet.getRange('B2').getValue();
+      this.living_status_flg = sheet.getRange('B3').getValue();
+
+    }
+
+  }
+
   //＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋
 
-  var feed_data = new FeedData()  //餌やり情報のインスタンス化
+  var feed_data = new FeedData();  //餌やり情報のインスタンス化
   feed_data.getFeedData(); //餌やりデータをspread sheetから取得
+
+  var room_status_flg = new Room_status_flg(); //部屋情報のインスタンス化
+  room_status_flg.getRoomStatusFlg(); //部屋情報データをspread sheetから取得
 
 
   sendData(a,b,c) //データの送信
