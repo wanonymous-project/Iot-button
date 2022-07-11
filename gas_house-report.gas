@@ -18,6 +18,10 @@ function doGet(e) {
   const SPREAD_SHEET_ID_nature_remo = '1LPYE4k1unV0rAAXkdanK-J58gsWrX94iBq6Y6ln-Lig';
   const SHEET_NAME_nature_remo = 'query';
 
+  //アンケート
+  const SPREAD_SHEET_ID_google_forms = '1eWZVU8Qx5H0sjZN4y_UPa1cPcELA-cExCF2Muf6PB4U';
+  const SHEET_NAME_nature_google_forms = 'query';
+
 
   //▲SHEET情報の設定--------------------------------------------------------------
 
