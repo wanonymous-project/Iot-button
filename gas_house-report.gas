@@ -9,7 +9,7 @@ function doGet(e) {
   const SPREAD_SHEET_ID_room_status_flg = '1SupSrnjGNuus-ASH5jTMu1ptKz79X3XoiM1j6WZwhro';
   //▲SHEET情報の設定--------------------------------------------------------------
 
-  //餌やり・水交換のspread sheetからのデータ取得クラス
+  //餌やり・水交換クラス
   class FeedData{
 
     constructor() {
@@ -30,7 +30,7 @@ function doGet(e) {
 
   }
 
-  //部屋利用情報の取得
+  //部屋利用情報クラス
   class Room_status_flg{
 
     constructor(){
