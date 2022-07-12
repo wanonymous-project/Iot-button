@@ -74,10 +74,10 @@ function doGet(e) {
       this.latest_shampoo =  sheet.getRange('B16').getValue();
       this.latest_toy_wash =  sheet.getRange('B20').getValue();
       this.latest_medicine =  sheet.getRange('B24').getValue();
-      this.exercise_today =  sheet.getRange('D28').getValue();
-      this.exercise_5days =  sheet.getRange('I28').getValue();
-      this.latest_weight_measurement =  sheet.getRange('B32').getValue();
-      this.weight =  sheet.getRange('D32').getValue();
+      this.exercise_today =  sheet.getRange('D29').getValue();
+      this.exercise_5days =  sheet.getRange('I29').getValue();
+      this.latest_weight_measurement =  sheet.getRange('B33').getValue();
+      this.weight =  sheet.getRange('D33').getValue();
 
     }
 
