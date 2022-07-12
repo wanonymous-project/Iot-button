@@ -46,6 +46,43 @@ function doGet(e) {
 
   }
 
+  //アンケート情報クラス
+  class Google_forms{
+
+    constructor(){
+      this.latest_nail_forefoot = '1990/01/01 00:00:00'; 
+      this.latest_nail_hindfoot = '1990/01/01 00:00:00';
+      this.latest_sole_trimmer = '1990/01/01 00:00:00';
+      this.latest_shampoo = '1990/01/01 00:00:00';
+      this.latest_toy_wash = '1990/01/01 00:00:00';
+      this.latest_medicine = '1990/01/01 00:00:00';
+      this.exercise_today = 0;
+      this.exercise_5days = 0;
+      this.latest_weight_measurement = '1990/01/01 00:00:00'; 
+      this.weight = 0;
+    }
+
+    getGoogleForms(){
+
+      //スプレットシート情報の取得
+      const sheet = SpreadsheetApp.openById(SPREAD_SHEET_ID_google_forms).getSheetByName(SHEET_NAME_nature_google_forms);
+      
+      //データ取得
+      this.latest_nail_forefoot =  sheet.getRange('B4').getValue(); 
+      this.latest_nail_hindfoot =  sheet.getRange('B8').getValue();
+      this.latest_sole_trimmer =  sheet.getRange('B12').getValue();
+      this.latest_shampoo =  sheet.getRange('B16').getValue();
+      this.latest_toy_wash =  sheet.getRange('B20').getValue();
+      this.latest_medicine =  sheet.getRange('B24').getValue();
+      this.exercise_today =  sheet.getRange('D28').getValue();
+      this.exercise_5days =  sheet.getRange('I28').getValue();
+      this.latest_weight_measurement =  sheet.getRange('B32').getValue();
+      this.weight =  sheet.getRange('D32').getValue();
+
+    }
+
+  }
+
   //部屋利用情報クラス
   class Room_status_flg{
 
@@ -95,48 +132,14 @@ function doGet(e) {
 
   }
 
-  //アンケート情報クラス
-  class Google_forms{
-
-    constructor(){
-      this.latest_nail_forefoot = '1990/01/01 00:00:00'; 
-      this.latest_nail_hindfoot = '1990/01/01 00:00:00';
-      this.latest_sole_trimmer = '1990/01/01 00:00:00';
-      this.latest_shampoo = '1990/01/01 00:00:00';
-      this.latest_toy_wash = '1990/01/01 00:00:00';
-      this.latest_medicine = '1990/01/01 00:00:00';
-      this.exercise_today = 0;
-      this.exercise_5days = 0;
-      this.latest_weight_measurement = '1990/01/01 00:00:00'; 
-      this.weight = 0;
-    }
-
-    getGoogleForms(){
-
-      //スプレットシート情報の取得
-      const sheet = SpreadsheetApp.openById(SPREAD_SHEET_ID_google_forms).getSheetByName(SHEET_NAME_nature_google_forms);
-      
-      //データ取得
-      this.latest_nail_forefoot =  sheet.getRange('B4').getValue(); 
-      this.latest_nail_hindfoot =  sheet.getRange('B8').getValue();
-      this.latest_sole_trimmer =  sheet.getRange('B12').getValue();
-      this.latest_shampoo =  sheet.getRange('B16').getValue();
-      this.latest_toy_wash =  sheet.getRange('B20').getValue();
-      this.latest_medicine =  sheet.getRange('B24').getValue();
-      this.exercise_today =  sheet.getRange('D28').getValue();
-      this.exercise_5days =  sheet.getRange('I28').getValue();
-      this.latest_weight_measurement =  sheet.getRange('B32').getValue();
-      this.weight =  sheet.getRange('D32').getValue();
-
-    }
-
-  }
-
   //＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋
 
 
   var feed_data = new FeedData();  //餌やり情報のインスタンス化
   feed_data.getFeedData(); //餌やりデータをspread sheetから取得
+
+  var google_forms = new Google_forms(); //google form 情報のインスタンス化
+  google_forms.getGoogleForms() //google form 情報をspread sheetから取得
 
   var room_status_flg = new Room_status_flg(); //部屋情報のインスタンス化
   room_status_flg.getRoomStatusFlg(); //部屋情報データをspread sheetから取得
@@ -144,14 +147,29 @@ function doGet(e) {
   var room_environment = new Room_environment(); //部屋環境のインスタンス化
   room_environment.getRoomEnvironmentData() //部屋環境データをspread sheetから取得
 
-  var google_forms = new Google_forms(); //google form 情報のインスタンス化
-  google_forms.getGoogleForms() //google form 情報をspread sheetから取得
-
 
   //データ送付==================
-  const data = [];
 
-  data.push([feed_data.latest_food_time,feed_data.latest_water_time]);
+  //jsonを作る
+  const data = {
+    latest_food_time: feed_data.latest_food_time,
+    latest_water_time: feed_data.latest_water_time,
+    weight: google_forms.weight,
+    exercise_today:google_forms.exercise_today,
+    exercise_5days:google_forms.exercise_5days,
+    latest_shampoo:google_forms.latest_shampoo,
+    latest_sole_trimmer:google_forms.latest_sole_trimmer,
+    latest_nail_forefoot:google_forms.latest_nail_forefoot,
+    latest_nail_hindfoot:google_forms.latest_nail_hindfoot,
+    living_status_flg:room_status_flg.living_status_flg,
+    washitsu_status_flg:room_status_flg.washitsu_status_flg,
+    living_temperature:room_environment.bme280_temperature,
+    living_humidity:room_environment.bme280_humidity,
+    washitsu_temperature:room_environment.nature_remo_temperature
+  } 
+
+  Logger.log(JSON.stringify(data));
+
 
   //返却情報を生成
   const result = ContentService.createTextOutput();
