@@ -95,6 +95,44 @@ function doGet(e) {
 
   }
 
+  //アンケート情報クラス
+  class Google_forms{
+
+    constructor(){
+      this.latest_nail_forefoot = '1990/01/01 00:00:00'; 
+      this.latest_nail_hindfoot = '1990/01/01 00:00:00';
+      this.latest_sole_trimmer = '1990/01/01 00:00:00';
+      this.latest_shampoo = '1990/01/01 00:00:00';
+      this.latest_toy_wash = '1990/01/01 00:00:00';
+      this.latest_medicine = '1990/01/01 00:00:00';
+      this.exercise_today = 0;
+      this.exercise_5days = 0;
+      this.latest_weight_measurement = '1990/01/01 00:00:00'; 
+      this.weight = 0;
+    }
+
+    getGoogleForms(){
+
+      //スプレットシート情報の取得
+      const sheet = SpreadsheetApp.openById(SPREAD_SHEET_ID_google_forms).getSheetByName(SHEET_NAME_nature_google_forms);
+      
+      //データ取得
+
+      this.latest_nail_forefoot =  sheet.getRange('B4').getValue(); 
+      this.latest_nail_hindfoot =  sheet.getRange('B8').getValue();
+      this.latest_sole_trimmer =  sheet.getRange('B12').getValue();
+      this.latest_shampoo =  sheet.getRange('B16').getValue();
+      this.latest_toy_wash =  sheet.getRange('B20').getValue();
+      this.latest_medicine =  sheet.getRange('B24').getValue();
+      this.exercise_today =  sheet.getRange('D28').getValue();
+      this.exercise_5days =  sheet.getRange('I28').getValue();
+      this.latest_weight_measurement =  sheet.getRange('B32').getValue();
+      this.weight =  sheet.getRange('D32').getValue();
+
+    }
+
+  }
+
   //＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋
 
   var feed_data = new FeedData();  //餌やり情報のインスタンス化
