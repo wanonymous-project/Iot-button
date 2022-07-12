@@ -137,6 +137,7 @@ function doGet(e) {
 
   var feed_data = new FeedData();  //餌やり情報のインスタンス化
   feed_data.getFeedData(); //餌やりデータをspread sheetから取得
+  Logger.log(feed_data.latest_food_time);
 
   var google_forms = new Google_forms(); //google form 情報のインスタンス化
   google_forms.getGoogleForms() //google form 情報をspread sheetから取得
@@ -155,6 +156,7 @@ function doGet(e) {
     latest_food_time: feed_data.latest_food_time,
     latest_water_time: feed_data.latest_water_time,
     weight: google_forms.weight,
+    latest_weight_measurement:google_forms.latest_weight_measurement,
     exercise_today:google_forms.exercise_today,
     exercise_5days:google_forms.exercise_5days,
     latest_shampoo:google_forms.latest_shampoo,
