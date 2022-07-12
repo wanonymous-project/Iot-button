@@ -144,6 +144,9 @@ function doGet(e) {
   var room_environment = new Room_environment(); //部屋環境のインスタンス化
   room_environment.getRoomEnvironmentData() //部屋環境データをspread sheetから取得
 
+  var google_forms = new Google_forms(); //google form 情報のインスタンス化
+  google_forms.getGoogleForms() //google form 情報をspread sheetから取得
+
 
 
   sendData(a,b,c) //データの送信
