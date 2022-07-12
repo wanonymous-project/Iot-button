@@ -44,7 +44,6 @@ function doGet(e) {
     
     }
 
-
   }
 
   //部屋利用情報クラス
@@ -118,7 +117,6 @@ function doGet(e) {
       const sheet = SpreadsheetApp.openById(SPREAD_SHEET_ID_google_forms).getSheetByName(SHEET_NAME_nature_google_forms);
       
       //データ取得
-
       this.latest_nail_forefoot =  sheet.getRange('B4').getValue(); 
       this.latest_nail_hindfoot =  sheet.getRange('B8').getValue();
       this.latest_sole_trimmer =  sheet.getRange('B12').getValue();
@@ -137,7 +135,6 @@ function doGet(e) {
   //＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋
 
 
-
   var feed_data = new FeedData();  //餌やり情報のインスタンス化
   feed_data.getFeedData(); //餌やりデータをspread sheetから取得
 
@@ -151,15 +148,10 @@ function doGet(e) {
   google_forms.getGoogleForms() //google form 情報をspread sheetから取得
 
 
+  //データ送付==================
+  const data = [];
 
-  sendData(a,b,c) //データの送信
-
-  return result;
-}
-
-
-
-function sendData(a,b,c){
+  data.push([feed_data.latest_food_time,feed_data.latest_water_time]);
 
   //返却情報を生成
   const result = ContentService.createTextOutput();
@@ -169,5 +161,9 @@ function sendData(a,b,c){
 
   //JSONテキストをセットする
   result.setContent(JSON.stringify(data));
-  
+
+  return result;
 }
+
+
+
