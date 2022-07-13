@@ -119,8 +119,8 @@ function doGet(e) {
       const sheet_bme280 = SpreadsheetApp.openById(SPREAD_SHEET_ID_bme280).getSheetByName(SHEET_NAME_bme280);
       
       //データ取得
-      this.bme280_temperature = sheet_bme280.getRange('B8').getValue();
-      this.bme280_humidity = sheet_bme280.getRange('B12').getValue();
+      this.bme280_temperature = sheet_bme280.getRange('C8').getValue();
+      this.bme280_humidity = sheet_bme280.getRange('C12').getValue();
 
       //スプレットシート情報の取得
       const sheet_nature_remo = SpreadsheetApp.openById(SPREAD_SHEET_ID_nature_remo).getSheetByName(SHEET_NAME_nature_remo);
