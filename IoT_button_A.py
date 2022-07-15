@@ -81,7 +81,7 @@ def main():
 def record_and_notice(dev_name,dev_phys,button):
 
     try:
-        url = 'https://script.google.com/macros/s/AKfycbyUGtXrzmUod2y_3eNAeyBJKS6bRWd0eX3FtW-STDVJY24vbhS1iWEXyuP47rAqp2An0A/exec'+'?device_name='+dev_name+'&device_phys='+dev_phys+'&button_symbol='+button_symbol+'&button='+button
+        url = 'https://script.google.com/macros/s/Damy/exec'+'?device_name='+dev_name+'&device_phys='+dev_phys+'&button_symbol='+button_symbol+'&button='+button
         print(button_symbol)
         print(button)
         print(url)
